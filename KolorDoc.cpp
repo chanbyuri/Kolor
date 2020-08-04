@@ -136,3 +136,75 @@ void CKolorDoc::Dump(CDumpContext& dc) const
 
 
 // CKolorDoc 명령
+
+
+BOOL CKolorDoc::OnOpenDocument(LPCTSTR lpszPathName)
+{
+	if (!CDocument::OnOpenDocument(lpszPathName))
+		return FALSE;
+
+	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
+	CImage m_bitmap;
+	m_bitmap.Load(lpszPathName);
+
+	m_height = m_bitmap.GetHeight;
+	m_width = m_bitmap.GetWidth;
+
+	return TRUE;
+}
+
+
+void CKolorDoc::freeInputImage(int h)
+{
+	// TODO: 여기에 구현 코드 추가.
+	if (m_InputImageR != NULL) {
+		for (int i = 0; i < h; i++)
+			free(m_InputImageR[i]);
+		free(m_InputImageR);
+	}
+	m_InputImageR = NULL;
+	if (m_InputImageG != NULL) {
+		for (int i = 0; i < h; i++)
+			free(m_InputImageG[i]);
+		free(m_InputImageG);
+	}
+	m_InputImageG = NULL;
+	if (m_InputImageB != NULL) {
+		for (int i = 0; i < h; i++)
+			free(m_InputImageB[i]);
+		free(m_InputImageB);
+	}
+	m_InputImageB = NULL;
+}
+void CKolorDoc::freeOutputImage(int h)
+{
+	// TODO: 여기에 구현 코드 추가.
+	if (m_OutputImageR != NULL) {
+		for (int i = 0; i < h; i++)
+			free(m_OutputImageR[i]);
+		free(m_OutputImageR);
+	}
+	m_OutputImageR = NULL;
+	if (m_OutputImageG != NULL) {
+		for (int i = 0; i < h; i++)
+			free(m_OutputImageG[i]);
+		free(m_OutputImageG);
+	}
+	m_OutputImageG = NULL;
+	if (m_OutputImageB != NULL) {
+		for (int i = 0; i < h; i++)
+			free(m_OutputImageB[i]);
+		free(m_OutputImageB);
+	}
+	m_OutputImageB = NULL;
+}
+
+unsigned char** CKolorDoc::malloc2D(int h, int w)
+{
+	// TODO: 여기에 구현 코드 추가.
+	unsigned char **p;
+	p = (unsigned char**)malloc(h * sizeof(unsigned char*));
+	for (int i = 0; i < h; i++)
+		p[i] = (unsigned char*)malloc(w * sizeof(unsigned char));
+	return p;
+}

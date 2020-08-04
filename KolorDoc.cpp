@@ -147,9 +147,28 @@ BOOL CKolorDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	CImage m_bitmap;
 	m_bitmap.Load(lpszPathName);
 
-	m_height = m_bitmap.GetHeight;
-	m_width = m_bitmap.GetWidth;
+	// 기존 메모리 해제
+	freeInputImage(m_old_height);
+	//중요! 입력 영상 크기 결정
+	m_height = m_bitmap.GetHeight();
+	m_width = m_bitmap.GetWidth();
+	m_old_height = m_height;
+	m_old_width = m_width;
 
+	// 메모리 할당
+	m_InputImageR = malloc2D(m_height, m_width);
+	m_InputImageG = malloc2D(m_height, m_width);
+	m_InputImageB = malloc2D(m_height, m_width);
+
+	//칼라 이미지-> 메모리
+	COLORREF pixel;
+	for(int i=0;i<m_height;i++)
+		for (int k = 0; k < m_width; k++) {
+			pixel = m_bitmap.GetPixel(i, k);
+			m_InputImageR[k][i] = (unsigned char)GetRValue(pixel);
+			m_InputImageG[k][i] = (unsigned char)GetGValue(pixel);
+			m_InputImageB[k][i] = (unsigned char)GetBValue(pixel);
+		}
 	return TRUE;
 }
 
@@ -207,4 +226,14 @@ unsigned char** CKolorDoc::malloc2D(int h, int w)
 	for (int i = 0; i < h; i++)
 		p[i] = (unsigned char*)malloc(w * sizeof(unsigned char));
 	return p;
+}
+
+
+void CKolorDoc::OnCloseDocument()
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	freeInputImage(m_height);
+	freeOutputImage(m_Re_height);
+
+	CDocument::OnCloseDocument();
 }

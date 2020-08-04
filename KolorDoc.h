@@ -65,4 +65,5 @@ public:
 	void freeInputImage(int h);
 	void freeOutputImage(int h);
 	unsigned char** malloc2D(int h, int w);
+	virtual void OnCloseDocument();
 };

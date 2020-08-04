@@ -27,6 +27,7 @@ BEGIN_MESSAGE_MAP(CKolorView, CView)
 	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
+	ON_COMMAND(ID_EQUAL_COLOR, &CKolorView::OnEqualColor)
 END_MESSAGE_MAP()
 
 // CKolorView 생성/소멸
@@ -51,7 +52,7 @@ BOOL CKolorView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CKolorView 그리기
 
-void CKolorView::OnDraw(CDC* /*pDC*/)
+void CKolorView::OnDraw(CDC* pDC)
 {
 	CKolorDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
@@ -59,8 +60,23 @@ void CKolorView::OnDraw(CDC* /*pDC*/)
 		return;
 
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
-}
+	unsigned char R, G, B;
+	for (int i = 0; i < pDoc->m_height; i++)
+		for (int k = 0; k < pDoc->m_width; k++) {
+			R = pDoc->m_InputImageR[i][k];
+			G = pDoc->m_InputImageG[i][k];
+			B = pDoc->m_InputImageB[i][k];
+			pDC->SetPixel(k + 5, i + 5, RGB(R, G, B));
+		}
 
+	for (int i = 0; i < pDoc->m_Re_height; i++)
+		for (int k = 0; k < pDoc->m_Re_width; k++) {
+			R = pDoc->m_OutputImageR[i][k];
+			G = pDoc->m_OutputImageG[i][k];
+			B = pDoc->m_OutputImageB[i][k];
+			pDC->SetPixel(k + 5 + pDoc->m_width + 5, i + 5, RGB(R, G, B));
+		}
+}
 
 // CKolorView 인쇄
 
@@ -103,3 +119,9 @@ CKolorDoc* CKolorView::GetDocument() const // 디버그되지 않은 버전은 �
 
 
 // CKolorView 메시지 처리기
+
+
+void CKolorView::OnEqualColor()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}

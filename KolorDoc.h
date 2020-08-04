@@ -61,9 +61,4 @@ public:
 	int m_old_width;
 	int m_old_Re_height;
 	int m_old_Re_width;
-	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
-	void freeInputImage(int h);
-	void freeOutputImage(int h);
-	unsigned char** malloc2D(int h, int w);
-	virtual void OnCloseDocument();
 };

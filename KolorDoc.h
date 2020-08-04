@@ -45,4 +45,11 @@ protected:
 	// 검색 처리기에 대한 검색 콘텐츠를 설정하는 도우미 함수
 	void SetSearchContent(const CString& value);
 #endif // SHARED_HANDLERS
+public:
+	unsigned char**m_InputImageR = NULL;
+	unsigned char**m_InputImageG = NULL;
+	unsigned char**m_InputImageB = NULL;
+	unsigned char**m_OutputImageR = NULL;
+	unsigned char**m_OutputImageG = NULL;
+	unsigned char**m_OutputImageB = NULL;
 };
